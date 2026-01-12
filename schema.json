@@ -1,0 +1,82 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DNS Record Configuration",
+  "description": "Hanya mendukung CNAME dan A records",
+  "type": "object",
+  "required": ["subdomain", "record"],
+  "properties": {
+    "subdomain": {
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?$",
+      "description": "Nama subdomain (tanpa domain utama)"
+    },
+    "record": {
+      "type": "object",
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["type", "value"],
+          "properties": {
+            "type": {
+              "const": "CNAME",
+              "description": "Record tipe CNAME"
+            },
+            "value": {
+              "type": "string",
+              "pattern": "^[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$",
+              "description": "Target CNAME (contoh: adjisoft.github.io)"
+            },
+            "ttl": {
+              "type": "integer",
+              "minimum": 120,
+              "maximum": 7200,
+              "default": 3600
+            },
+            "proxied": {
+              "type": "boolean",
+              "default": false,
+              "description": "Cloudflare proxy (orange cloud)"
+            }
+          },
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "required": ["type", "value"],
+          "properties": {
+            "type": {
+              "const": "A",
+              "description": "Record tipe A"
+            },
+            "value": {
+              "type": "string",
+              "oneOf": [
+                {
+                  "format": "ipv4",
+                  "pattern": "^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$"
+                },
+                {
+                  "const": "dynamic",
+                  "description": "Gunakan IP dinamis dari GitHub runner (tidak direkomendasikan untuk produksi)"
+                }
+              ]
+            },
+            "ttl": {
+              "type": "integer",
+              "minimum": 120,
+              "maximum": 7200,
+              "default": 3600
+            },
+            "proxied": {
+              "type": "boolean",
+              "default": true,
+              "description": "Cloudflare proxy disarankan untuk A records"
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "additionalProperties": false
+}

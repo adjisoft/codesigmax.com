@@ -1,0 +1,16 @@
+{
+  "subdomain": "nama-kamu",
+  "record": {
+    // Pilih SALAH SATU: "CNAME" ATAU "A"
+    "type": "CNAME",
+    // Untuk CNAME: isi dengan domain target (contoh: username.github.io)
+    // Untuk A Record: isi dengan alamat IPv4 (contoh: 192.0.2.1)
+    "value": "contoh.com",
+    // Opsional: TTL dalam detik (minimal 120, default 3600)
+    "ttl": 3600,
+    // Opsional: Aktifkan Cloudflare proxy
+    // - Untuk CNAME: biasanya false
+    // - Untuk A Record: biasanya true (direkomendasikan)
+    "proxied": false
+  }
+}
